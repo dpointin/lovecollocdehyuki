@@ -1,5 +1,5 @@
 import math
-
+#ceci est un test
 
 def get_divisors(n):
     for i in xrange(1, int(math.sqrt(n)) + 1):

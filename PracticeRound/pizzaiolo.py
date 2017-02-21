@@ -1,5 +1,11 @@
 import math
-#ceci est un test
+
+"""
+Google Hash Code pratice round 2017
+Naive solution that consists in :
+    Taking valid slices from the smallest to the biggest and from 0,0 to n_rows,n_cols
+"""
+
 
 def get_divisors(n):
     for i in xrange(1, int(math.sqrt(n)) + 1):
@@ -68,10 +74,10 @@ class Pizza:
         the corresponding size of the pizza
         """
         # Max slice_size = max_elts, min slice_size = number of elements by type * 2 (nb of different ingredients)
-        slices = []
+        pizza_slices = []
         for slice_rows, slice_cols in self._get_slice_sizes():
-            slices += self._extract_valid_slices(slice_rows, slice_cols)
-        return slices
+            pizza_slices += self._extract_valid_slices(slice_rows, slice_cols)
+        return pizza_slices
 
     def get_score(self):
         return sum(1 if self.used_pizza[i][j] else 0 for i in xrange(self.n_rows) for j in xrange(self.n_cols))
@@ -79,10 +85,12 @@ class Pizza:
 
 def read_input(filename):
     with open(filename, 'r') as f:
+        grid = []
+        min_elt_by_type = 0
+        max_elts = 0
         for i, line in enumerate(f.readlines()):
             if i == 0:
                 _, _, min_elt_by_type, max_elts = map(int, line.strip().split())
-                grid = []
             else:
                 grid.append(line.strip())
         return Pizza(min_elt_by_type, max_elts, grid)
@@ -94,5 +102,5 @@ if __name__ == '__main__':
     pizza = read_input(infile)
     slices = pizza.get_slices()
     output_file = open(outfile, 'w+')
-    output_file.write(str(len(slices)) + '\n' + '\n'.join(' '.join(str(i) for i in slice) for slice in slices))
+    output_file.write(str(len(slices)) + '\n' + '\n'.join(' '.join(str(i) for i in s) for s in slices))
     print pizza.get_score()

@@ -5,7 +5,7 @@ Google Hash Code pratice round 2017
 Naive solution that consists in :
     Taking valid slices from the smallest to the biggest and from 0,0 to n_rows,n_cols
 """
-
+# nouvelle tentative
 
 def get_divisors(n):
     for i in xrange(1, int(math.sqrt(n)) + 1):

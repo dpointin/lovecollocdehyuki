@@ -6,7 +6,7 @@ class Video:
 
 
     def __str__(self):
-        chaine="video {}".format(id)
+        chaine="*** Video {}".format(self.id)
         chaine+="\n serveur : "
         chaine+=", ".join(serveur.id for serveur in self.serveurs)
         return chaine
@@ -17,7 +17,7 @@ class CacheServeur:
         self.id = id
 
     def __str__(self):
-        chaine = "CacheServeur {}".format(id)
+        chaine = "*** CacheServeur {}".format(self.id)
         chaine += "\n videos : "
         chaine += ", ".join(video.id for video in self.videos)
         return chaine
@@ -30,10 +30,13 @@ class EndPoint:
         self.id = id
 
     def __str__(self):
-        chaine = "End point {}".format(id)
+        chaine = "*** End point {}".format(self.id)
         chaine += "\n latente : {}".format(self.lat_Server)
-        chaine += "\n cache serveur : "
-        chaine += str(self.cacheServeur)
+        chaine += "\n dict cache serveur / latence: "
+        print self.cacheServeur
+        for cache_s in self.cacheServeur :
+            chaine += 'serv '+str(cache_s.id)+' lat '+str(self.cacheServeur[cache_s])+', '
+        chaine += "\n"
         return chaine
 
 
@@ -45,7 +48,7 @@ class Request:
         self.video = video
 
     def __str__(self):
-        chaine = "Request {}".format(id)
+        chaine = "*** Request {}".format(self.id)
         chaine+="\n endpoint :" +str(self.endPoint.id)
         chaine += "\n video :" + str(self.video.id)
         chaine += "\n nb :" + str(self.nb)
@@ -60,7 +63,8 @@ class Probleme:
         self.endpoints=endpoints
 
     def __str__(self):
-        s = "MAX_CAP = "+self.max_cap+"\n"
+        s = " **** PROBLEM \n"
+        s += "MAX_CAP = "+str(self.max_cap)+"\n"
         s += "Serveurs" +"\n".join(str(s) for s in self.cache_servers)+"\n"
         s += "Requests" +"\n".join(str(s) for s in self.requests)+"\n"
         s += "Videos" +"\n".join(str(s) for s in self.videos)+"\n"

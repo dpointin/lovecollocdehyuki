@@ -7,6 +7,8 @@ class Video:
 
     def __str__(self):
         chaine="video {}".format(id)
+        chaine+="\n serveur : "
+        chaine+=", ".join(serveur.id for serveur in self.serveurs)
         return chaine
 
 class CacheServeur:
@@ -14,9 +16,11 @@ class CacheServeur:
         self.videos = []
         self.id = id
 
-        def __str__(self):
-            chaine = "CacheServeur {}".format(id)
-            return chaine
+    def __str__(self):
+        chaine = "CacheServeur {}".format(id)
+        chaine += "\n videos : "
+        chaine += ", ".join(video.id for video in self.videos)
+        return chaine
 
 
 class EndPoint:
@@ -27,6 +31,9 @@ class EndPoint:
 
     def __str__(self):
         chaine = "End point {}".format(id)
+        chaine += "\n latente : {}".format(self.lat_Server)
+        chaine += "\n cache serveur : "
+        chaine += str(self.cacheServeur)
         return chaine
 
 
@@ -39,6 +46,9 @@ class Request:
 
     def __str__(self):
         chaine = "Request {}".format(id)
+        chaine+="\n endpoint :" +str(self.endPoint.id)
+        chaine += "\n video :" + str(self.video.id)
+        chaine += "\n nb :" + str(self.nb)
         return chaine
 
 class Probleme:

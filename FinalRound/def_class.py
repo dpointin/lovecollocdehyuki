@@ -46,6 +46,7 @@ class EndPoint:
         return chaine
 
 
+
 class Request:
     def __init__(self, id, video, endPoint, nombre):
         self.nb = nombre
@@ -81,6 +82,13 @@ class Probleme:
         s += "Videos" + "\n".join(str(s) for s in self.videos) + "\n"
         s += "Endpoints" + "\n".join(str(s) for s in self.endpoints) + "\n"
         return s
+
+    def distanceActuelle(self, request):
+        distanceB=request.endPoint.lat_Server
+        for cacheServeur, latence in request.endPoint.cacheServeurs.iteritems():
+            if request.video in cacheServeur.videos:
+                distanceB=min(distanceB, latence)
+        return distanceB
 
     def solution_naive(self):
         for request in sorted(self.requests, key=lambda x: x.nb, reverse=True):

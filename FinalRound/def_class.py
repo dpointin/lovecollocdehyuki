@@ -4,11 +4,12 @@ class Video:
         self.serveurs=[]
 
 class CacheServeur:
-    def __init__(self):
+    def __init__(self, id):
         self.videos=[]
+        self.id=id
 
 class EndPoint:
-    def __init__(self, lat_dataServer, dico, id):
+    def __init__(self, id, lat_dataServer, dico):
         self.lat_Server=lat_dataServer
         self.cacheServeur=dico
         self.id=id

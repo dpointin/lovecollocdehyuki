@@ -90,6 +90,19 @@ class Probleme:
                 distanceB=min(distanceB, latence)
         return distanceB
 
+    def distance(self, video):
+        max = [0,0]
+        for cash_center in self.valid_cs(video):
+            requete=self.trouverRequete(video)
+            somme=0
+            for r in requete:
+                somme+=r.endPoint.cacheServeurs[cash_center.id]*r.nb-self.distanceActuelle(r)
+            if somme>max:
+                max=[cash_center,somme]
+        return max
+
+
+
     def solution_naive(self):
         for request in sorted(self.requests, key=lambda x: x.nb, reverse=True):
             cache_servers = [c for c in request.endPoint.cacheServeurs if
@@ -118,4 +131,4 @@ class Probleme:
             s += str(c.id) + ' ' + ' '.join([str(v.id) for v in c.videos]) + '\n'
         return s
 
-    video = sum()
+

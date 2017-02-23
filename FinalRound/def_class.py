@@ -92,10 +92,24 @@ class Probleme:
 
     def solution_naive(self):
         for request in sorted(self.requests, key=lambda x: x.nb, reverse=True):
-            cache_servers = [c for c in request.endPoint.cacheServeurs if c.free_size(self.max_cap) > request.size]
+            cache_servers = [c for c in request.endPoint.cacheServeurs if
+                             c.free_size(self.max_cap) > request.size and request.video not in c.videos]
             cache_servers = sorted(cache_servers, key=lambda x: request.endPoint.cacheServeurs[x])
             if len(cache_servers) > 0:
                 cache_servers[0].videos.append(request.video)
+
+    def solution_2(self):
+        while True:
+            requests = sorted(self.requests, key=lambda x: self.distanceActuelle(x)*x.nb, reverse=True)
+            for request in requests:
+                cache_servers = [c for c in request.endPoint.cacheServeurs if
+                                 c.free_size(self.max_cap) > request.size and request.video not in c.videos]
+                cache_servers = sorted(cache_servers, key=lambda x: request.endPoint.cacheServeurs[x])
+                if len(cache_servers) > 0:
+                    cache_servers[0].videos.append(request.video)
+                    break
+            else:
+                break
 
     def output_sol(self):
         cache_servers_used = [c for c in self.cache_servers if len(c.videos) > 0]
@@ -103,3 +117,5 @@ class Probleme:
         for c in cache_servers_used:
             s += str(c.id) + ' ' + ' '.join([str(v.id) for v in c.videos]) + '\n'
         return s
+
+    video = sum()

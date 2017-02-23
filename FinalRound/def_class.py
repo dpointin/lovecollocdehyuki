@@ -44,7 +44,15 @@ class Request:
 class Probleme:
     def __init__(self, max_cap, cache_serveur, resquest, video, endpoints):
         self.max_cap=max_cap
-        self.cache_serveur=cache_serveur
-        self.resquest=resquest
-        self.video=video
+        self.cache_servers=cache_serveur
+        self.requests=resquest
+        self.videos=video
         self.endpoints=endpoints
+
+    def __str__(self):
+        s = "MAX_CAP = "+self.max_cap+"\n"
+        s += "Serveurs" +"\n".join(str(s) for s in self.cache_servers)+"\n"
+        s += "Requests" +"\n".join(str(s) for s in self.requests)+"\n"
+        s += "Videos" +"\n".join(str(s) for s in self.videos)+"\n"
+        s += "Endpoints" +"\n".join(str(s) for s in self.endpoints)+"\n"
+        return s

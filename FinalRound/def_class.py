@@ -63,7 +63,7 @@ class Request:
 
     @property
     def size(self):
-        return self.nb * self.video.taille
+        return self.video.taille
 
 
 class Probleme:
@@ -111,6 +111,23 @@ class Probleme:
             else:
                 break
 
+    def trouverRequete(self,video):
+        return [request for request in self.requests if video in request.videos]
+
+    def valid_cs(self,video):
+        return [cs for cs in self.cache_servers if cs.free_size(self.max_cap)>video.taille
+                                              and cs in [r.endPoint.cacheServeurs for r in self.trouverRequete(video)]
+                                              and video not in cs.videos]
+
+    def solution_3(self):
+        while True :
+            video = sorted(self.videos, key = lambda x : self.distance(x),reverse = True)[0]
+            cs = self.bestcs(video)
+            if cs is None :
+                break
+            cs.videos.append(video)
+
+
     def output_sol(self):
         cache_servers_used = [c for c in self.cache_servers if len(c.videos) > 0]
         s = str(len(cache_servers_used)) + '\n'
@@ -118,4 +135,3 @@ class Probleme:
             s += str(c.id) + ' ' + ' '.join([str(v.id) for v in c.videos]) + '\n'
         return s
 
-    video = sum()

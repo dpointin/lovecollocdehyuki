@@ -90,16 +90,18 @@ class Probleme:
                 distanceB=min(distanceB, latence)
         return distanceB
 
-    def distance(self, video):
-        max = [0,0]
+    def bestcs(self, video):
+        max=0
+        cmax=None
         for cash_center in self.valid_cs(video):
             requete=self.trouverRequete(video)
             somme=0
             for r in requete:
                 somme+=r.endPoint.cacheServeurs[cash_center.id]*r.nb-self.distanceActuelle(r)
             if somme>max:
-                max=[cash_center,somme]
-        return max
+                max=somme
+                cmax=cash_center
+        return cmax
 
 
 

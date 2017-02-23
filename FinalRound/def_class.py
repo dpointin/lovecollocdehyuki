@@ -22,6 +22,12 @@ class CacheServeur:
         chaine += ", ".join(video.id for video in self.videos)
         return chaine
 
+    def free_size(self, max_cap):
+        taille=max_cap
+        for v in self.videos:
+            taille-=v.taille
+        return taille
+
 
 class EndPoint:
     def __init__(self, id, lat_dataServer, dico):
@@ -53,6 +59,10 @@ class Request:
         chaine += "\n video :" + str(self.video.id)
         chaine += "\n nb :" + str(self.nb)
         return chaine
+
+    @property
+    def size(self):
+        return self.nombre*self.video.taille
 
 class Probleme:
     def __init__(self, max_cap, cache_serveur, resquest, video, endpoints):

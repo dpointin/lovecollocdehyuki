@@ -1,5 +1,6 @@
 class Video:
-    def __init__(self, taille):
+    def __init__(self, id, taille):
+        self.id=id
         self.taille = taille
         self.serveurs=[]
 
@@ -15,8 +16,9 @@ class EndPoint:
         self.id=id
 
 class Request:
-    def __init__(self, id, idEndPoint, nombre):
+    def __init__(self, id, endPoint, Video, nombre):
         self.nb=nombre
-        self.idEndPoint=idEndPoint
+        self.endPoint=endPoint
         self.id=id
+        self.video=video
 

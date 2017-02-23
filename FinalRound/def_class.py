@@ -4,12 +4,12 @@ class Video:
         self.taille = taille
         self.serveurs = []
 
-
     def __str__(self):
-        chaine="*** Video {}".format(self.id)
-        chaine+="\n serveur : "
-        chaine+=", ".join(serveur.id for serveur in self.serveurs)
+        chaine = "*** Video {}".format(self.id)
+        chaine += "\n serveur : "
+        chaine += ", ".join(serveur.id for serveur in self.serveurs)
         return chaine
+
 
 class CacheServeur:
     def __init__(self, id):
@@ -23,25 +23,25 @@ class CacheServeur:
         return chaine
 
     def free_size(self, max_cap):
-        taille=max_cap
+        taille = max_cap
         for v in self.videos:
-            taille-=v.taille
+            taille -= v.taille
         return taille
 
 
 class EndPoint:
     def __init__(self, id, lat_dataServer, dico):
         self.lat_Server = lat_dataServer
-        self.cacheServeur = dico
+        self.cacheServeurs = dico
         self.id = id
 
     def __str__(self):
         chaine = "*** End point {}".format(self.id)
         chaine += "\n latente : {}".format(self.lat_Server)
         chaine += "\n dict cache serveur / latence: "
-        print self.cacheServeur
-        for cache_s in self.cacheServeur :
-            chaine += 'serv '+str(cache_s.id)+' lat '+str(self.cacheServeur[cache_s])+', '
+        print self.cacheServeurs
+        for cache_s in self.cacheServeurs:
+            chaine += 'serv ' + str(cache_s.id) + ' lat ' + str(self.cacheServeurs[cache_s]) + ', '
         chaine += "\n"
         return chaine
 
@@ -55,28 +55,43 @@ class Request:
 
     def __str__(self):
         chaine = "*** Request {}".format(self.id)
-        chaine+="\n endpoint :" +str(self.endPoint.id)
+        chaine += "\n endpoint :" + str(self.endPoint.id)
         chaine += "\n video :" + str(self.video.id)
         chaine += "\n nb :" + str(self.nb)
         return chaine
 
     @property
     def size(self):
-        return self.nombre*self.video.taille
+        return self.nb * self.video.taille
+
 
 class Probleme:
     def __init__(self, max_cap, cache_serveur, resquest, video, endpoints):
-        self.max_cap=max_cap
-        self.cache_servers=cache_serveur
-        self.requests=resquest
-        self.videos=video
-        self.endpoints=endpoints
+        self.max_cap = max_cap
+        self.cache_servers = cache_serveur
+        self.requests = resquest
+        self.videos = video
+        self.endpoints = endpoints
 
     def __str__(self):
         s = " **** PROBLEM \n"
-        s += "MAX_CAP = "+str(self.max_cap)+"\n"
-        s += "Serveurs" +"\n".join(str(s) for s in self.cache_servers)+"\n"
-        s += "Requests" +"\n".join(str(s) for s in self.requests)+"\n"
-        s += "Videos" +"\n".join(str(s) for s in self.videos)+"\n"
-        s += "Endpoints" +"\n".join(str(s) for s in self.endpoints)+"\n"
+        s += "MAX_CAP = " + str(self.max_cap) + "\n"
+        s += "Serveurs" + "\n".join(str(s) for s in self.cache_servers) + "\n"
+        s += "Requests" + "\n".join(str(s) for s in self.requests) + "\n"
+        s += "Videos" + "\n".join(str(s) for s in self.videos) + "\n"
+        s += "Endpoints" + "\n".join(str(s) for s in self.endpoints) + "\n"
+        return s
+
+    def solution_naive(self):
+        for request in sorted(self.requests, key=lambda x: x.nb, reverse=True):
+            cache_servers = [c for c in request.endPoint.cacheServeurs if c.free_size(self.max_cap) > request.size]
+            cache_servers = sorted(cache_servers, key=lambda x: request.endPoint.cacheServeurs[x])
+            if len(cache_servers) > 0:
+                cache_servers[0].videos.append(request.video)
+
+    def output_sol(self):
+        cache_servers_used = [c for c in self.cache_servers if len(c.videos) > 0]
+        s = str(len(cache_servers_used)) + '\n'
+        for c in cache_servers_used:
+            s += str(c.id) + ' ' + ' '.join([str(v.id) for v in c.videos]) + '\n'
         return s

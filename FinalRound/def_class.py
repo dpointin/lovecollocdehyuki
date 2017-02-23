@@ -5,6 +5,10 @@ class Video:
         self.serveurs = []
 
 
+    def __str__(self):
+        chaine="video {}".format(id)
+        return chaine
+
 class CacheServeur:
     def __init__(self, id):
         self.videos = []

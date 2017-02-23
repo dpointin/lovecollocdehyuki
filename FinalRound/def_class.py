@@ -63,7 +63,7 @@ class Request:
 
     @property
     def size(self):
-        return self.nb * self.video.taille
+        return self.video.taille
 
 
 class Probleme:

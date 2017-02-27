@@ -18,4 +18,5 @@ def read_input(filename):
         for i in xrange(n_requests):
             i_video, i_endpoint, n = map(int, f.readline().strip().split())
             requests.append(Request(i, videos[i_video], endpoints[i_endpoint], n))
+            videos[i_video].requests.append(requests[i])
     return Probleme(MAX_CAPACITY, cache_servers, requests, videos, endpoints)
